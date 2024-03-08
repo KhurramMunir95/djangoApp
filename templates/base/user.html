@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <h3>Groups</h3>
+    <p> {{group.description}} </p>
+    <h3>Comments</h3>
+    <hr>
+    <div>
+        <h3>Group Participants</h3>
+        {% for user in participants %}
+            <p> {{user.username}} </p>
+        {% endfor %}
+    </div>
+    <hr>
+    <div>
+        {% if userInGroup %}
+            {% for message in user_messages %}
+                <p> {{message.text}} - {{message.created | timesince}} ago - by {{message.user}} </p>
+                {% if request.user == message.user %}
+                    <a href="{% url 'delete-message' message.id %}">Delete</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        {% if request.user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" placeholder="enter message..." name="text">
+        </form>
+        {% endif %}
+    </div>
+    {% if userInGroup %}
+        {% include 'base/activity_feed.html' %}
+    {% endif %}
+{% endblock content %}

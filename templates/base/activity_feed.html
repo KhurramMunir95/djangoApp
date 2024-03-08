@@ -1,0 +1,10 @@
+<div>
+    <h3>Activity Feed</h3>
+        {% for message in user_messages %}
+            <p> {{message.text}} - {{message.created | timesince}} ago - by {{message.user}} </p>
+            <small>Replied to {{message.group}} </small>
+            {% if request.user == message.user %}
+                <a href="{% url 'delete-message' message.id %}">Delete</a>
+            {% endif %}
+        {% endfor %}
+</div>

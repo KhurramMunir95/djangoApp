@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <h4>Welcome, {{request.user}} </h4>
+
+    <h4>Topics</h4>
+    {% for group in groups %}
+    <div class="box">
+        <a class="title" href="{% url 'User' group.id %}">
+            <p>{{group.name}}</p>
+        </a>
+        {% if request.user == group.user  %}
+        <div class="actions">
+            <a class="btn btn-dark" href="{% url 'update-group' group.id %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'delete-group' group.id %}">Delete</a>
+        </div>
+        {% endif %}
+        <a class="author" href="javascript:void(0)"> by {{group.user.first_name}} </a>
+    </div>
+    {% endfor %}
+{% endblock content %}
